@@ -22,6 +22,7 @@
 #define TX_SUCCESS		1
 #define TX_MAX_RETRIES	2
 #define TX_SENDING		3
+#define TX_FIFO_EMPTY   4
 
 class NRFLib {
     public:
@@ -38,6 +39,7 @@ class NRFLib {
         void set_payload(unsigned char payload);
         void send_message(unsigned char buf[]);
         unsigned char get_status(void);
+        unsigned char get_fifo_status(void);
         unsigned char get_link_quality(void);
         bool data_ready(void);
         bool is_sending(void);

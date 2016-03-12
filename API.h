@@ -33,6 +33,7 @@
 #define RX_DR    0x40
 #define TX_DS    0x20
 #define MAX_RT   0x10
+#define TX_EMPTY 0x10
 //***************************************************
 // SPI(nRF24L01) registers(addresses)
 #define CONFIG          0x00  // 'Config' register address

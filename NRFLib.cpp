@@ -55,10 +55,7 @@ void NRFLib::set_RXADDR(unsigned char RXADDR[]) {
 		_rx_addr[i] = RXADDR[i];
 }
 
-void NRFLib::set_TXADDR(unsigne
-		//RXMode();
-		//flushRX();
-		//flushTX();d char TXADDR[]) {
+void NRFLib::set_TXADDR(unsigned char TXADDR[]) {
 	for (int i=0; i<ADR_WIDTH; i++)
 		_tx_addr[i] = TXADDR[i];
 }
@@ -69,6 +66,11 @@ void NRFLib::set_payload(unsigned char payload) {
 
 unsigned char NRFLib::get_status(void) {
 	unsigned char sstatus=SPI_Read(STATUS);
+	return sstatus;
+}
+
+unsigned char NRFLib::get_fifo_status(void) {
+	unsigned char sstatus=SPI_Read(FIFO_STATUS);
 	return sstatus;
 }
 
@@ -146,8 +148,15 @@ unsigned char NRFLib::send_success(void) {
 		SPI_RW_Reg(WRITE_REG+STATUS, status);
 		flushTX();
 		return TX_MAX_RETRIES;
-	} else
-		return TX_SENDING;
+	} else {
+		status = SPI_Read(FIFO_STATUS);
+		if (status & TX_EMPTY) {
+			return TX_FIFO_EMPTY;
+		} else {
+			return TX_SENDING;
+		}
+	}
+
 }
 
 bool NRFLib::data_ready(void){
